@@ -491,16 +491,16 @@ int main() {
       cargarPeliculas(&storage); // Cargar las películas desde el archivo csv
       break;
     case '2':
-      buscarPorID(storage.peliID); // Buscar un film por su id
+      buscarPorID(storage.peliID); // Mostrar films por su id
       break;
     case '3':
-      buscarPorDirector(storage.peliDirector); // Buscar un film por su director
+      buscarPorDirector(storage.peliDirector); // Mostrar films por director
       break;
     case '4':
-      buscarPorGenero(storage.peliGenre); // Buscar un film por su género
+      buscarPorGenero(storage.peliGenre); // Mostrar films por género
       break;
     case '5': 
-      buscarPorDecada(storage.peliDecade); // Buscar un film por su década
+      buscarPorDecada(storage.peliDecade); // Mostrar films por década
       break;
     case '6':
       printf("Esta opción no se encuentra disponible en la versión actual del sistema. Por favor, intente nuevamente más tarde.\n"); // 
@@ -512,7 +512,7 @@ int main() {
       printf("Saliendo del sistema...\n"); // Salir del sistema
       break;
     default:
-      printf("Opción inválida, porfavor inserte una nueva opción nuevamente"); // Mostrar un mensaje de error si la opción ingresada no es válida
+      printf("Opción inválida, porfavor inserte una nueva opción nuevamente"); // Mensaje de error
       break;
     }
     presioneTeclaParaContinuar();
