@@ -9,10 +9,11 @@ Este sistema permite buscar películas dentro de una base de datos proveniente d
 Para poder usar el sistema, usted debe hacer uso del Fork & Run a su derecha en la pantalla. Tras hacer eso, debe hacer uso del siguiente comando para poder hacer uso del buscador de películas.
 
 ````
-./main
+./tarea2
 ````
 
-Trate de no tocar nada del código en main.c, ya que este puede hacer que el programa deje de funcionar como es debido.
+Trate de no tocar nada del código en tarea2.c, ya que este puede hacer que el programa deje de funcionar como es debido.
+
 
 ## FUNCIONALIDADES
 
@@ -31,105 +32,163 @@ Trate de no tocar nada del código en main.c, ya que este puede hacer que el pro
 
 ## EJEMPLO DE USO
 
-Para empezar, debemos a registrar a nuestro paciente:
+Para empezar, debemos acargar las películas mediante la primera opción:
 
 ````
-REGISTRACIÓN DE PACIENTE
+...
+ID: tt0119567, Título: The Lost World: Jurassic Park, Año: 1997
+ID: tt0093773, Título: Predator, Año: 1987
+ID: tt0356150, Título: EuroTrip, Año: 2004
+ID: tt0018756, Título: Champagne, Año: 1928
+ID: tt0143145, Título: The World Is Not Enough, Año: 1999
+ID: tt0040982, Título: You Gotta Stay Happy, Año: 1948
 
-Ingrese nombre del paciente: Eduardo Cordero
+Películas cargadas exitosamente.
 
-Ingrese edad del paciente: 19
-
-Ingrese síntoma del paciente: Fiebre
+Presione Enter para continuar...
 ````
 
-Esto deja a nuestro paciente, Eduardo, ingresado al sistema como paciente de prioridad baja. Si llegase el caso de que al ser revisado, el doctor requiera que el paciente sea movido de prioridad, uno puede hacer uso de la asignación de prioridad:
+Ya con las películas cargadas, podemos tomar una de las varias vehículas mediante su ID para ver toda su información con la segunda opción del menu:
 
 ````
-REASIGNACIÓN DE PRIORIDAD
+Ingrese su opción: 2
+Ingrese el id de la película: tt0119567
 
-Ingrese nombre del paciente: Eduardo Cordero
+Título: The Lost World: Jurassic Park
 
-Ingrese antigua prioridad del paciente: BAJA
+Género(s):
 
-Ingrese nueva prioridad (1/2/3): 2
+- Action
+- Adventure
+- Sci-Fi
+
+Director(es):
+- Steven Spielberg
+
+Rating: 6.5
+
+Año: 1997
+
+Presione Enter para continuar...
 ````
 
-Debido a que la fiebre de Eduardo no paraba, el doctor decidió subirlo a prioridad media. Ahora Eduardo no tendrá que esperar mucho tiempo, pero el hospital tiene varios pacientes antes que nuestro personaje. La lista se puede ver mediante la impresión de la lista de espera:
+Sabemos que el director de esta película es Steven Spielberg, por lo que si queremos conocer más películas dirigidas por él, podemos usar la tercera opción:
 
 ````
-Pacientes en espera:
+Ingrese su opción: 3
+Ingrese el nombre del director: Steven Spielberg
 
-PRIORIDAD ALTA (1):
+Películas del director Steven Spielberg:
 
-No hay pacientes en espera.
+- Schindler's List
+- Saving Private Ryan
+- Raiders of the Lost Ark
+- Jaws
+- E.T. the Extra-Terrestrial
+- Jurassic Park
+- Close Encounters of the Third Kind
+- Catch Me If You Can
+- Lincoln
+- Minority Report
+- Indiana Jones and the Last Crusade
+- The Sugarland Express
+- The Color Purple
+- Munich
+- The Terminal
+- Hook
+- Amistad
+- The Lost World: Jurassic Park
 
-PRIORIDAD MEDIA (2):
-
-Nombre: Julia Torres
-Edad: 42
-Sintoma: Dolor estomacal
-Hora de Ingreso: 15:59 
-
-Nombre: Pablo Ibarra
-Edad: 7
-Síntoma: Falta de energía
-Hora de Ingreso: 16:10
-
-Nombre: Eduardo Cordero
-Edad: 19
-Síntoma: Fiebre
-Hora de Ingreso: 16:42 
-
-PRIORIDAD BAJA:
-
-Nombre: Javiera Cortés
-Edad: 16
-Síntoma: Tos
-Hora de Ingreso: 15:47
-
-````
-
-Para poder avanzar con los pacientes, el doctor llama a Julia Torres para que sea atendida:
-
-````
-ATENDIENDO AL PACIENTE
-
-Nombre: Julia Torres
-Edad: 42
-Síntoma: Dolor estomacal
-Hora de Ingreso: 15:59
-
-El paciente ha sido atendido.
+Presione Enter para continuar...
 
 ````
 
-Ya con Julia atendida, si queremos ver la lista de espera de prioridad media, podemos hacer uso de la interfaz para exclusivamente esta lista:
+Uno de los géneros de Lost World: Jurassic Park es Sci-Fi, así que busquemos más películas del mismo género:
 
 ````
-LISTA POR PRIORIDAD
+Ingrese su opción: 4
+Ingrese el género de la película: Sci-Fi
 
-Elija la prioridad a mostrar (1/2/3): 2
+Películas del género 'Sci-Fi':
 
-PRIORIDAD MEDIA (2):
+- Star Wars: Episode V - The Empire Strikes Back
+- Star Wars
+- A Clockwork Orange
+- 2001: A Space Odyssey
+- Blade Runner
+- E.T. the Extra-Terrestrial
+- Inception
+- Jurassic Park
 
-Nombre: Pablo Ibarra
-Edad: 7
-Síntoma: Falta de energía
-Hora de Ingreso: 16:10
+(...)
 
-Nombre: Eduardo Cordero
-Edad: 19
-Síntoma: Fiebre
-Hora de Ingreso: 16:42 
+- Star Wars: Episode I - The Phantom Menace
+- Mystery Men
+- Vanilla Sky
+- Bill & Ted's Excellent Adventure
+- V for Vendetta
+- The Absent Minded Professor
+- A Scanner Darkly
+- Dude, Where's My Car?
+- Sphere
+- The Day After Tomorrow
+- Weird Science
+- Spaceballs
+- The Lost World: Jurassic Park
+- Predator
 
+Presione Enter para continuar...
+````
+
+Hay varias películas dentro del género SciFi, muchas para contar fácilmente. Si buscar por género no es lo tuyo, podemos buscar películas por década:
+
+````
+Ingrese su opción: 5
+Ingrese la década de la película en fórmato completo (Ej: 1980): 1910
+
+Películas de la década de 1910:
+
+- The Birth of a Nation
+
+Presione Enter para continuar...
+````
+
+Por último, si queremos ser aún más específicos con la lista de películas, podemos filtrar por género y década:
+
+````
+Ingrese su opción: 7
+Ingrese el género de la película: Comedy
+Ingrese la década de la película: 2010
+
+Películas del género 'Comedy' de la década 2010:
+
+- Midnight in Paris
+- The Descendants
+- The Artist
+- Toy Story 3
+- Beginners
+- Another Year
+- Crazy, Stupid, Love.
+- Silver Linings Playbook
+- Moonrise Kingdom
+- Love & Other Drugs
+- Bridesmaids
+- Due Date
+- Get Him to the Greek
+- The Best Exotic Marigold Hotel
+- Cyrus
+- Hesher
+
+Presione Enter para continuar...
 ````
 
 Para salir del sistema, haga uso de la última opción y estará fuera de la aplicación:
 
 ````
-Saliendo del sistema de gestión hospitalaria...
-Presione una tecla para continuar...
+Ingrese su opción: 8
+Saliendo del sistema...
+
+Presione Enter para continuar..
 ````
 
 ---
@@ -137,5 +196,5 @@ Presione una tecla para continuar...
 En caso de que haya problemas con el código, usted puede contactar al desarrollador de la aplicación mediante GitHub. Solamente haga uso de este código en el shell y contacte al desarrollador con todos los detalles posibles:
 
 ````
-gcc tdas/*.c main.c -Wno-unused-result -o main
+gcc tdas/*.c tarea2.c -Wno-unused-result -o tarea2
 ````
