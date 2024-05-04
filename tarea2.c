@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #define MAX_LINE_LENGTH 1024
 #define MAX_FIELDS 100
@@ -82,13 +83,13 @@ int is_equal_str(void *key1, void *key2) { // Funcion para comparar dos strings
 
 int is_equal_int(void *key1, void *key2) { return *(int *)key1 == *(int *)key2; } // Funcion para comparar dos enteros
 
-void limpiarPantalla() { system("clear"); } // Funcion para limpiar la pantalla
+void limpiarPantalla() { system("clear"); } 
 
 void presioneTeclaParaContinuar() { 
 
   puts("\nPresione Enter para continuar...");
-  getchar(); // Consume el '\n' del buffer de entrada
-  getchar(); // Espera a que el usuario presione una tecla
+  getchar(); 
+  getchar(); 
 
 }
 
@@ -110,7 +111,7 @@ void mostrarMenuPrincipal() {
 
 }
 
-void createGenreList(List *entryList, const char *entry) { // Función para crear lista de géneros
+void fillGenreList(List *entryList, const char *entry) { // Función para crear lista de géneros
 
   char *entryCopy = strdup(entry); // Crear una copia de la entrada
 
@@ -125,15 +126,16 @@ void createGenreList(List *entryList, const char *entry) { // Función para crea
 
   while (tempW != NULL ) { // Recorrer la lista de géneros
 
-    list_pushBack(entryList, strdup(tempW)); // Agregar cada género a la lista
-    tempW = strtok(NULL, ", "); // Obtener el siguiente género
+    list_pushBack(entryList, strdup(tempW)); // Se agrega hace una copia de tempW y se agrega a la lista.
+    tempW = strtok(NULL, ", "); // Obtener el siguiente género.
     
   } 
   
   free(entryCopy); // Liberar la memoria de la copia
+  
 }
 
-void createDirectorList(List *directorList, const char *entry) { // Función para crear lista de directores
+void fillDirectorList(List *directorList, const char *entry) { // Función para crear lista de directores
 
   char *entryCopy = strdup(entry); // Crear una copia de la entrada
   
@@ -146,17 +148,17 @@ void createDirectorList(List *directorList, const char *entry) { // Función par
   
   while (tempDirector != NULL) { // Recorrer la lista de directores
       
-    char *cleanedDirector = strdup(tempDirector); // Crear una copia limpia del director
+    char *cleanedDirector = strdup(tempDirector); // Crear una nueva copia del director
         
-    while (isspace(*cleanedDirector)) { // Eliminar espacios en blanco al principio de la copia limpia del director
+    while (isspace(*cleanedDirector)) { // Eliminar espacios en blanco al inicio de la copia del director
         
       cleanedDirector++; // Avanzar al siguiente carácter
         
     }
       
-    char* end = cleanedDirector + strlen(cleanedDirector) - 1; // Obtener el último carácter de la copia limpia del director
+    char *end = cleanedDirector + strlen(cleanedDirector) - 1; // Se obtiene el último cáracter de la copia del director
       
-    while (end > cleanedDirector && isspace(*end)) { // Eliminar espacios en blanco al final de la copia limpia del director
+    while (end > cleanedDirector && isspace(*end)) { // Eliminar espacios en blanco al final de la copia del director
         
       *end-- = '\0'; // Eliminar el carácter
         
@@ -166,7 +168,9 @@ void createDirectorList(List *directorList, const char *entry) { // Función par
     tempDirector = strtok(NULL, ","); // Obtener el siguiente director
       
   }
+  
   free(entryCopy); // Liberar la memoria de la copia
+  
 }
 
 void searchValue(Map *map, const char *value, Film *film) { // Función para buscar un valor en un mapa
@@ -238,7 +242,7 @@ void massInsertion(typeListFilm *data, Film *film) { // Función para insertar l
 
   map_insert(data->peliID, film->id, film); // Insertar el id del film en el mapa de ids
   processDirectorsAndGenre(data->peliGenre, data->peliDirector, film); // Procesar los directores y géneros del film
-  processDecades(data->peliDecade, film); // Procesar las décadas del film
+  processDecades(data->peliDecade, film); // Procesar año del film para ser agregados a sus respectivas décadas
 
 }
 
@@ -255,21 +259,21 @@ void cargarPeliculas(typeListFilm *data) { // Función para cargar los datos de 
   char **campos; // Declarar un puntero a un array de punteros a caracteres
   campos = leer_linea_csv(archivo, ','); // Leer la primera línea del archivo csv y almacenar los campos en el array de
 
-  while ((campos = leer_linea_csv(archivo, ',')) != NULL) { // Leer cada línea del archivo csv y almacenar los campos en el array de
+  while ((campos = leer_linea_csv(archivo, ',')) != NULL) { 
 
     Film *peli = (Film *) malloc(sizeof(Film)); // Asignar memoria para una estructura Film
 
-    strcpy(peli->id, campos[1]); // Copiar el id del film desde el campo correspondiente del array de campos
-    strcpy(peli->title, campos[5]); // Copiar el título del film desde el campo correspondiente del array de campos
+    strcpy(peli->id, campos[1]); // Se transfiere el ID de la película al struct.
+    strcpy(peli->title, campos[5]); // Se transfiere el título de la película al struct.
 
     peli->genres = list_create(); // Crear una lista para los géneros del film 
     peli->director = list_create(); // Crear una lista para los directores del film
 
-    peli->year = atoi(campos[10]); // Convertir el año de la película a un entero y almacenarlo
-    peli->rating = atof(campos[8]); // Convertir la calificación de la película a un flotante y almacenarlo
+    peli->year = atoi(campos[10]); // Se convierte el año string a año entero para ser almacenado en el struct.
+    peli->rating = atof(campos[8]); // Se convierte el rating string a float rating para ser almacenado en el struct.
 
-    createGenreList(peli->genres, campos[11]); // Crear la lista de géneros del film a partir de los géneros del campo correspondiente
-    createDirectorList(peli->director, campos[14]); // Crear la lista de directores del film a partir de los directores del campo correspondiente
+    fillGenreList(peli->genres, campos[11]); // Se pobla la lista de géneros del film
+    fillDirectorList(peli->director, campos[14]); // Se pobla la lista de directores del film
     massInsertion(data, peli); // Insertar los datos del film en los mapas correspondientes
 
   }
@@ -278,14 +282,15 @@ void cargarPeliculas(typeListFilm *data) { // Función para cargar los datos de 
 
   MapPair *pair = map_first(data->peliID); 
 
-  while (pair != NULL) { // Se recorrer el mapa de ids
+  while (pair != NULL) { 
 
     Film *peli = pair->value; // Obtener el puntero a la estructura Film asociada al id del film
     
-    printf("ID: %s, Título: %s, Año: %d\n", peli->id, peli->title, peli->year); // Mostrar el id, título y año del film
+    printf("ID: %s, Título: %s, Año: %d\n", peli->id, peli->title, peli->year); 
     pair = map_next(data->peliID); // Obtener el siguiente par del mapa de ids
     
   }
+  printf("\nPelículas cargadas exitosamente.\n");
 }
 
 void buscarPorID(Map *peliID) { // Función para buscar un film por su id
@@ -304,8 +309,8 @@ void buscarPorID(Map *peliID) { // Función para buscar un film por su id
     void *aux = list_first(peli->genres); // Obtener el primer género de la lista de géneros del film
     void *temp = list_first(peli->director); // Obtener el primer director de la lista de directores del film
 
-    printf("\nTítulo: %s\n", peli->title); // Mostrar el título del film
-    printf("\nGénero(s):\n\n"); // Mostrar los géneros del film
+    printf("\nTítulo: %s\n", peli->title); 
+    printf("\nGénero(s):\n\n"); 
 
     while (aux != NULL) { // Recorrer la lista de géneros del film
 
@@ -314,7 +319,7 @@ void buscarPorID(Map *peliID) { // Función para buscar un film por su id
 
     }
 
-    printf("\nDirector(es):\n"); // Mostrar los directores del film
+    printf("\nDirector(es):\n"); 
 
     while (temp != NULL) { // Recorrer la lista de directores del film
 
@@ -323,8 +328,8 @@ void buscarPorID(Map *peliID) { // Función para buscar un film por su id
 
     }
 
-    printf("\nRating: %.1f\n", peli->rating); // Mostrar la calificación del film
-    printf("\nAño: %d\n", peli->year); // Mostrar el año del film
+    printf("\nRating: %.1f\n", peli->rating); 
+    printf("\nAño: %d\n", peli->year); 
 
   } else
     printf("La película con id %s no existe\n", id); // Mostrar un mensaje de error si no se encontró el id
@@ -332,55 +337,46 @@ void buscarPorID(Map *peliID) { // Función para buscar un film por su id
 
 void buscarPorDirector(Map *peliDirector) { // Función para buscar un film por su director
   
-    char directorInput[100]; // Declarar un string para almacenar el nombre del director ingresado por el usuario
+  char directorInput[100]; // Declarar un string para almacenar el nombre del director ingresado por el usuario
 
-    printf("Ingrese el nombre del director: "); // Pedir al usuario que ingrese el nombre del director
-    scanf(" %99[^\n]", directorInput); // Leer el nombre del director ingresado por el usuario
+  printf("Ingrese el nombre del director: "); 
+  scanf(" %99[^\n]", directorInput); // Leer el nombre del director ingresado por el usuario
 
-
-    char cleanedDirector[100]; // Declarar un string para almacenar el nombre del director limpio
-    strcpy(cleanedDirector, directorInput); // Copiar el nombre del director ingresado por el usuario al string limpio
+  char cleanedDirector[100]; // Declarar un string para almacenar el nombre del director sin cáracteres extra
+  strcpy(cleanedDirector, directorInput); // Se copia el nombre ingresado en el nuevo string
   
-    while (isspace(cleanedDirector[0])) // Eliminar espacios en blanco al principio del string limpio
+  while (isspace(cleanedDirector[0])) // Eliminar espacios en blanco al principio del string 
+    memmove(cleanedDirector, cleanedDirector + 1, strlen(cleanedDirector)); // Mover cáracteres un index más adelante
+  
+  for (size_t i = strlen(cleanedDirector); isspace(cleanedDirector[i - 1]); --i) 
+    cleanedDirector[i - 1] = '\0'; // Eliminar espacios en blanco al final del string limpio
+  
+  MapPair *directorPair = map_search(peliDirector, (void *) cleanedDirector); // Búsqueda del director en el mapa
+
+  if (directorPair != NULL) { // Si se encontró el nombre del director
       
-        memmove(cleanedDirector, cleanedDirector + 1, strlen(cleanedDirector)); // Mover los caracteres del string limpio una posición hacia adelante
+    List *movies = (List *) directorPair->value; // Obtener la lista de películas asociada al nombre del director
+    void *aux = list_first(movies);
     
-  
-    for (size_t i = strlen(cleanedDirector); isspace(cleanedDirector[i - 1]); --i) 
-        cleanedDirector[i - 1] = '\0'; // Eliminar espacios en blanco al final del string limpio
-  
-    MapPair *directorPair = map_search(peliDirector, (void *) cleanedDirector); // Buscar el nombre del director en el mapa de directores
+    printf("\nPelículas del director %s:\n\n", cleanedDirector);
 
-    if (directorPair != NULL) { // Si se encontró el nombre del director
-      
-      List *movies = (List *) directorPair->value; // Obtener la lista de películas asociada al nombre del director
-      
-      if (movies != NULL) { // Si se encontraron películas asociadas al nombre del director
-        
-        void *aux = list_first(movies);
-        printf("\nPelículas del director %s:\n\n", cleanedDirector); // Mostrar un mensaje indicando que se mostrarán las películas del director ingresado
-
-        while (aux != NULL) { // Se recorre la lista
+    while (aux != NULL) { 
               
-          Film *peli = (Film *) aux; // Se hace casting para conseguir el puntero a la estructura Film
+      Film *peli = (Film *) aux; // Se hace casting para conseguir el puntero a la estructura Film
               
-          printf("- %s\n", peli->title); // Se muestra el título de la película
-          aux = list_next(movies); // Se obtiene el siguiente elemento de la lista
+      printf("- %s\n", peli->title); 
+      aux = list_next(movies); // Se obtiene el siguiente elemento de la lista
               
-        }
-        
-      } else 
-          printf("No se encontró al director %s\n.", cleanedDirector); // Se muestra un mensaje indicando que no se encontró al director ingresado
-      
+    }
   } else 
-      printf("No se encontró al director %s\n.", cleanedDirector); // Se muestra un mensaje indicando que no se encontró al director ingresado
+      printf("No se encontró al director %s\n.", cleanedDirector); // Mensaje de error
 }
 
 void buscarPorGenero(Map *peliGenre) { // Función para buscar un film por su género
 
   char genre[100]; // Declarar un string para almacenar el género ingresado por el usuario
 
-  printf("Ingrese el género de la película: "); // Pedir al usuario que ingrese el género
+  printf("Ingrese el género de la película: "); 
   scanf("%s", genre); // Leer el género ingresado por el usuario
 
   MapPair *genrePair = map_search(peliGenre, genre); // Buscar el género en el mapa de géneros
@@ -388,42 +384,27 @@ void buscarPorGenero(Map *peliGenre) { // Función para buscar un film por su g�
   if (genrePair != NULL) { // Si se encontró el género
 
     List *movies = (List *) genrePair->value; // Obtener la lista de películas asociada al género
+    void *aux = list_first(movies); // Obtener el primer elemento de la lista de películas
 
-    if (movies != NULL) { // Si se encontraron películas asociadas al género
+    printf("\nPelículas del género '%s':\n\n", genre); 
 
-      void *aux = list_first(movies); // Obtener el primer elemento de la lista de películas
+    while (aux != NULL) { // Se recorre la lista
 
-      printf("\nPelículas del género '%s':\n\n", genre); // Mostrar un mensaje indicando que se mostrarán las películas del género ingresado
+      Film *peli = (Film *) aux; // Se hace casting para conseguir el puntero a la estructura Film
 
-      while (aux != NULL) { // Se recorre la lista
-
-        Film *peli = (Film *) aux; // Se hace casting para conseguir el puntero a la estructura Film
-
-        printf("- %s\n", peli->title); // Se muestra el título de la película
-        aux = list_next(movies); // Se obtiene el siguiente elemento de la lista
-
-      }
-
-    } else {
-
-      printf("La lista se encuentra vacía para el género '%s'\n", genre); // Mostrar un mensaje indicando que no se encontraron películas asociadas al género ing
-      return;
+      printf("- %s\n", peli->title); 
+      aux = list_next(movies); // Se obtiene el siguiente elemento de la lista
 
     }
-
-  } else {
-
-    printf("El género '%s' no se encuentra en la base de datos\n", genre); // Mostrar un mensaje indicando que el género ingresado no se encuentra en la base de
-    return;
-
-  }
+  } else
+    printf("El género '%s' no se encuentra en la base de datos\n", genre);
 }
 
 void buscarPorDecada(Map *peliDecade) { // Función para buscar un film por su década
 
   int tempDecade; // Declarar una variable para almacenar la década ingresada por el usuario
 
-  printf("Ingrese la década de la película en fórmato completo (Ex: 1980): "); // Pedir al usuario que ingrese la década
+  printf("Ingrese la década de la película en fórmato completo (Ej: 1980): "); 
   scanf("%i", &tempDecade); // Leer la década ingresada por el usuario
 
   MapPair *decadePair = map_search(peliDecade, (void *) &tempDecade); // Buscar la década en el mapa de décadas
@@ -431,34 +412,20 @@ void buscarPorDecada(Map *peliDecade) { // Función para buscar un film por su d
   if (decadePair != NULL) { // Si se encontró la década
 
     List *movies = (List *) decadePair->value; // Obtener la lista de películas asociada a la década
+    void *aux = list_first(movies); // Obtener el primer elemento de la lista de películas
 
-    if (movies != NULL) { // Si se encontraron películas asociadas a la década
+    printf("\nPelículas de la década de %i:\n\n", tempDecade); 
 
-      void *aux = list_first(movies); // Obtener el primer elemento de la lista de películas
+    while (aux != NULL) { // Se recorre la lista
 
-      printf("\nPelículas de la década de %i:\n\n", tempDecade); // Mostrar un mensaje indicando que se mostrarán las películas de la década ingres
+      Film *peli = (Film *) aux; // Se hace casting para conseguir el puntero a la estructura Film
 
-      while (aux != NULL) { // Se recorre la lista
-
-        Film *peli = (Film *) aux; // Se hace casting para conseguir el puntero a la estructura Film
-
-        printf("- %s\n", peli->title); // Se muestra el título de la película
-        aux = list_next(movies); // Se obtiene el siguiente elemento de la lista
-
-      }
-
-    } else {
-
-      printf("La lista se encuentra vacía para la década %i\n", tempDecade); // Mostrar un mensaje indicando que no se encontraron películas asociadas a la década
-      return;
+      printf("- %s\n", peli->title); 
+      aux = list_next(movies); // Se obtiene el siguiente elemento de la lista
 
     }
-
-  } else {
-    printf("La década %i no se encuentra en la base de datos\n", tempDecade); // Mostrar un mensaje indicando que la década ingresada no se encuentra en la base de
-    return;
-
-  }
+  } else
+    printf("La década %i no se encuentra en la base de datos\n", tempDecade);
 }
 
 void buscarPorDecadaGenero(Map *peliGenre) { // Función para buscar un film por su género y década
@@ -466,36 +433,40 @@ void buscarPorDecadaGenero(Map *peliGenre) { // Función para buscar un film por
   char genre[100]; // Declarar un string para almacenar el género ingresado por el usuario
   int tempDecade; // Declarar una variable para almacenar la década ingresada por el usuario
 
-  printf("Ingrese el género de la película: "); // Pedir al usuario que ingrese el género
-  scanf("%s", genre); // Leer el género ingresado por el usuario
-
-  printf("Ingrese la década de la película: "); // Pedir al usuario que ingrese la década 
-  scanf("%i", &tempDecade); // Leer la década ingresada por el usuario
+  printf("Ingrese el género de la película: ");
+  scanf("%s", genre); 
 
   MapPair *genrePair = map_search(peliGenre, genre); // Buscar el género en el mapa de géneros
 
-  if (genrePair != NULL) { // Si se encontró el género
+  if (genrePair != NULL) { 
 
     List *movies = (List *) genrePair->value; // Obtener la lista de películas asociada al género
 
-    if (movies != NULL) { // Si se encontraron películas asociadas al género
+    printf("Ingrese la década de la película: "); 
+    scanf("%i", &tempDecade);
+    
+    void *aux = list_first(movies); // Obtener el primer elemento de la lista de películas
+    bool flag = true; // Variable para mostrar mensaje especial si es que no se imprime nada
 
-      void *aux = list_first(movies); // Obtener el primer elemento de la lista de películas
+    printf("\nPelículas del género '%s' de la década %i:\n\n", genre, tempDecade); 
 
-      printf("\nPelículas del género '%s' de la década %i:\n\n", genre, tempDecade); // Mostrar un mensaje indicando que se mostrarán las películas del género y déc
+    while (aux != NULL) { // Se recorre la lista
 
-      while (aux != NULL) { // Se recorre la lista
+      Film *peli = (Film *) aux; 
 
-        Film *peli = (Film *) aux; // Se hace casting para conseguir el puntero a la estructura Film
-
-        if (peli->year >= tempDecade && peli->year < tempDecade + 10) // Si el año de la película está dentro de la década ingresada por el usuario
-          printf("- %s\n", peli->title); // Se muestra el título de la película
-
-        aux = list_next(movies); // Se obtiene el siguiente elemento de la lista
-
+      if (peli->year >= tempDecade && peli->year < tempDecade + 10) {
+        printf("- %s\n", peli->title); // Se muestra el título de la película
+        flag = false; // Se encontró una película, por lo que no se debe hacer uso del mensaje especial  
       }
+      aux = list_next(movies); // Se obtiene el siguiente elemento de la lista
     }
-  }
+
+    if (flag) { // Si no se printeo ninguna película, se muestra un mensaje especial
+      printf("La lista de '%s' de la década %i\n se encuentra vacía.", genre, tempDecade);
+      return;
+    }
+  } else 
+    printf("El género '%s' no se encuentra en la base de datos\n", genre);
 }
 
 int main() { 
