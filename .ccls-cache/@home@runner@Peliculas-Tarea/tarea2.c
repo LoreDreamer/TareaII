@@ -55,15 +55,14 @@ char **leer_linea_csv(FILE *archivo, char separador) { // Funcion para leer una 
         ptr++;
     }
 
-    if (*ptr) {
-      *ptr = '\0'; // Reemplazar comilla final o separador por terminación
+    if (*ptr) { // Reemplazar comilla final o separador por terminación
+      *ptr = '\0'; 
       ptr++;
       if (*ptr == separador)
         ptr++;
     }
 
-    // Quitar comilla final si existe
-    if (*(ptr - 2) == '\"') {
+    if (*(ptr - 2) == '\"') { // Quitar comilla final si existe
       *(ptr - 2) = '\0';
     }
 
@@ -72,13 +71,10 @@ char **leer_linea_csv(FILE *archivo, char separador) { // Funcion para leer una 
 
   campos[idx] = NULL; // Marcar el final del array
   return campos;
-
 }
 
 int is_equal_str(void *key1, void *key2) { // Funcion para comparar dos strings
-  
     return strcasecmp((char *) key1, (char *) key2) == 0;
-  
 }
 
 int is_equal_int(void *key1, void *key2) { return *(int *)key1 == *(int *)key2; } // Funcion para comparar dos enteros
@@ -94,7 +90,7 @@ void presioneTeclaParaContinuar() {
 }
 
 void mostrarMenuPrincipal() {
-
+  
   limpiarPantalla();
   puts("========================================");
   puts("     Base de Datos de Películas");
@@ -108,7 +104,7 @@ void mostrarMenuPrincipal() {
   puts("6) Buscar por rango de calificaciones");
   puts("7) Buscar por década y género");
   puts("8) Salir\n");
-
+  
 }
 
 void fillGenreList(List *entryList, const char *entry) { // Función para crear lista de géneros
@@ -130,9 +126,7 @@ void fillGenreList(List *entryList, const char *entry) { // Función para crear 
     tempW = strtok(NULL, ", "); // Obtener el siguiente género.
     
   } 
-  
   free(entryCopy); // Liberar la memoria de la copia
-  
 }
 
 void fillDirectorList(List *directorList, const char *entry) { // Función para crear lista de directores
@@ -168,9 +162,7 @@ void fillDirectorList(List *directorList, const char *entry) { // Función para 
     tempDirector = strtok(NULL, ","); // Obtener el siguiente director
       
   }
-  
   free(entryCopy); // Liberar la memoria de la copia
-  
 }
 
 void searchValue(Map *map, const char *value, Film *film) { // Función para buscar un valor en un mapa
@@ -204,7 +196,6 @@ void processDirectorsAndGenre(Map *entryMapA, Map *entryMapB, Film *entryFilm) {
 
   }
 
-  
   void *temp = list_first(entryFilm->director); // Obtener el primer director de la lista de directores del película
 
   while (temp != NULL) { // Recorrer la lista de directores
@@ -218,7 +209,6 @@ void processDirectorsAndGenre(Map *entryMapA, Map *entryMapB, Film *entryFilm) {
 void processDecades(Map *decadeMap, Film *entryFilm) { // Función para procesar las décadas
 
   int decade = (entryFilm->year / 10) * 10; // Obtener la década del año de la película
-
   int *decadeKey = malloc(sizeof(int)); // Asignar memoria para la clave de la década
   *decadeKey = decade; // Asignar la clave de la década
 
@@ -250,10 +240,8 @@ void cargarPeliculas(typeListFilm *data) { // Función para cargar los datos de 
 
   FILE *archivo = fopen("data/Top1500.csv", "r"); // Abrir el archivo csv en modo lectura
   if (archivo == NULL) { // Si no se pudo abrir el archivo, mostrar un mensaje de error y salir
-
     perror("Error al abrir el archivo");
     return;
-    
   }
 
   char **campos; // Declarar un puntero a un array de punteros a caracteres
@@ -279,7 +267,6 @@ void cargarPeliculas(typeListFilm *data) { // Función para cargar los datos de 
   }
 
   fclose(archivo); // Cerrar el archivo csv
-
   MapPair *pair = map_first(data->peliID); 
 
   while (pair != NULL) { 
@@ -327,10 +314,9 @@ void buscarPorID(Map *peliID) { // Función para buscar un film por su id
       temp = list_next(peli->director); // Obtener el siguiente director de la lista de directores del film
 
     }
-
     printf("\nRating: %.1f\n", peli->rating); 
     printf("\nAño: %d\n", peli->year); 
-
+    
   } else
     printf("La película con id %s no existe\n", id); // Mostrar un mensaje de error si no se encontró el id
 }
@@ -338,11 +324,11 @@ void buscarPorID(Map *peliID) { // Función para buscar un film por su id
 void buscarPorDirector(Map *peliDirector) { // Función para buscar un film por su director
   
   char directorInput[100]; // Declarar un string para almacenar el nombre del director ingresado por el usuario
-
+  char cleanedDirector[100]; // Declarar un string para almacenar el nombre del director sin cáracteres extra
+  
   printf("Ingrese el nombre del director: "); 
   scanf(" %99[^\n]", directorInput); // Leer el nombre del director ingresado por el usuario
 
-  char cleanedDirector[100]; // Declarar un string para almacenar el nombre del director sin cáracteres extra
   strcpy(cleanedDirector, directorInput); // Se copia el nombre ingresado en el nuevo string
   
   while (isspace(cleanedDirector[0])) // Eliminar espacios en blanco al principio del string 
@@ -523,5 +509,4 @@ int main() {
   free(storage.peliDecade); // Liberar la memoria del mapa de décadas
   free(storage.peliGenre); // Liberar la memoria del mapa de géneros
   free(storage.peliDirector); // Liberar la memoria del mapa de directores
-
 }
