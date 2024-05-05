@@ -29,6 +29,7 @@ Trate de no tocar nada del código en tarea2.c, ya que este puede hacer que el p
 - La opción para buscar por rango de calificaciones no se encuentra actualmente disponible, por lo que no podrá ser usado.
 - Al buscar por década y género, al introducir el género en minúsculas o mayúsculas no afectará la búsqueda de películas. Sin embargo, esta comodidad **NO ESTÁ** implementada para la búsqueda de directores o géneros.
 - Si introduce letras dentro de los campos en los cuales se pide año o década, el programa estará forzado a sacarlo del sistema.
+- Al pedirle los IDs de ciertas películas, si introduce cáracteres especiales podría forzar un error lo cual llevaría a un salida forzada del sistema.
 
 ## EJEMPLO DE USO
 
